@@ -203,11 +203,11 @@ function installWireGuard() {
 		installPackages apt-get install -y -t buster-backports wireguard
 	elif [[ ${OS} == 'fedora' ]]; then
 		if [[ ${VERSION_ID} -lt 32 ]]; then
-			installPackages yum install -y yum-plugins-core
-			yum copr enable -y jdoss/wireguard
-			installPackages yum install -y wireguard-dkms
+			installPackages dnf install -y dnf-plugins-core
+			dnf copr enable -y jdoss/wireguard
+			installPackages dnf install -y wireguard-dkms
 		fi
-		installPackages yum install -y wireguard-tools iptables qrencode
+		installPackages dnf install -y wireguard-tools iptables qrencode
 	elif [[ ${OS} == 'centos' ]] || [[ ${OS} == 'almalinux' ]] || [[ ${OS} == 'rocky' ]]; then
 		if [[ ${VERSION_ID} == 8* ]]; then
 			installPackages yum install -y epel-release elrepo-release
@@ -216,11 +216,11 @@ function installWireGuard() {
 		fi
 		installPackages yum install -y wireguard-tools iptables
 	elif [[ ${OS} == 'oracle' ]]; then
-		installPackages yum install -y oraclelinux-developer-release-el8
-		yum config-manager --disable -y ol8_developer
-		yum config-manager --enable -y ol8_developer_UEKR6
-		yum config-manager --save -y --setopt=ol8_developer_UEKR6.includepkgs='wireguard-tools*'
-		installPackages yum install -y wireguard-tools qrencode iptables
+		installPackages dnf install -y oraclelinux-developer-release-el9
+		dnf config-manager --disable -y ol9_developer
+		dnf config-manager --enable -y ol9_developer_UEKR6
+		dnf config-manager --save -y --setopt=ol9_developer_UEKR6.includepkgs='wireguard-tools*'
+		installPackages dnf install -y wireguard-tools qrencode iptables
 	elif [[ ${OS} == 'arch' ]]; then
 		installPackages pacman -S --needed --noconfirm wireguard-tools qrencode
 	elif [[ ${OS} == 'alpine' ]]; then
@@ -508,10 +508,10 @@ function uninstallWg() {
 		if [[ ${OS} == 'ubuntu' ]] || [[ ${OS} == 'debian' ]]; then
 			apt-get remove -y wireguard wireguard-tools qrencode
 		elif [[ ${OS} == 'fedora' ]]; then
-			yum remove -y --noautoremove wireguard-tools qrencode
+			dnf remove -y --noautoremove wireguard-tools qrencode
 			if [[ ${VERSION_ID} -lt 32 ]]; then
-				yum remove -y --noautoremove wireguard-dkms
-				yum copr disable -y jdoss/wireguard
+				dnf remove -y --noautoremove wireguard-dkms
+				dnf copr disable -y jdoss/wireguard
 			fi
 		elif [[ ${OS} == 'centos' ]] || [[ ${OS} == 'almalinux' ]] || [[ ${OS} == 'rocky' ]]; then
 			yum remove -y --noautoremove wireguard-tools
